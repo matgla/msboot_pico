@@ -1,0 +1,27 @@
+{
+    "dependencies": [
+        {
+            "link": "https://github.com/raspberrypi/pico-sdk.git",
+            "type": "git",
+            "version": "1.0.1",
+            "directory": "pico-sdk",
+            "target": "pico-sdk",
+            "options": {
+                "update_submodules": true,
+                "is_cmake_library": true
+            }
+        },
+        { 
+            "link": "https://github.com/raspberrypi/pico-extras.git",
+            "type": "git",
+            "version": "cd49a86",
+            "directory": "pico-extras",
+            "target": "pico-extras",
+            "options": {
+                "update_submodules": true,
+                "is_cmake_library": true
+            }
+
+        }
+    ]
+}
