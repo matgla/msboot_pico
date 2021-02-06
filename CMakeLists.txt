@@ -16,7 +16,7 @@
 
 cmake_minimum_required(VERSION 3.9)
 
-project (msos NONE) 
+project (msboot NONE) 
 
 find_package (Python3 COMPONENTS Interpreter) 
 
@@ -36,14 +36,25 @@ include (mspkg)
 setup_mspkg(${mspkg_SOURCE_DIR})
 
 find_package(pico-sdk REQUIRED)
+
+set (PICO_COPY_TO_RAM ON CACHE INTERNAL "")
+
 include (cmake/preload/toolchains/pico_arm_gcc)
+
 include (pico_sdk_init)
+enable_language(ASM C CXX) 
+
+set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 find_package(pico-extras REQUIRED)
 include (external/pico_extras_import)
 
+set (PICO_TARGET_LINKER_SCRIPT "DUPS")
+
 pico_sdk_init()
 
-enable_language(ASM C CXX) 
+
+set (CMAKE_C_STANDARD 11)
+set (CMAKE_CXX_STANDARD 20)
 
 add_subdirectory(src)
