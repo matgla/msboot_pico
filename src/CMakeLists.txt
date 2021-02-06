@@ -5,6 +5,8 @@ target_sources(msboot_pico
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp 
         ${CMAKE_CURRENT_SOURCE_DIR}/configuration.hpp 
         ${CMAKE_CURRENT_SOURCE_DIR}/configuration.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/connection.hpp 
+        ${CMAKE_CURRENT_SOURCE_DIR}/connection.cpp
 )
 
 find_package(eul REQUIRED)

@@ -30,7 +30,6 @@ parser.add_argument("--image", dest="image",
 args, rest = parser.parse_known_args()
 
 drives = subprocess.check_output(["lsblk -O -J"], stderr=subprocess.PIPE, shell=True)
-#print(process)
 
 y = json.loads(drives)
 

@@ -36,8 +36,9 @@ extern "C"
 #include <eul/crc/crc.hpp>
 
 #include "configuration.hpp"
+#include "connection.hpp"
 
-constexpr uint32_t flash_drive_offset = (512 * 1024); 
+constexpr uint32_t flash_drive_offset = (256 * 1024); 
 constexpr uint32_t bootloader_start = XIP_BASE;
 constexpr uint32_t configuration_memory_block = bootloader_start + flash_drive_offset;
 
@@ -102,26 +103,28 @@ void prepare_for_flashing()
 int main() 
 {
     stdio_init_all(); 
-  
-    char buffer[100];
+ 
+    msboot::Connection connection;
     while (true) 
     {
-        char c = getchar(); 
-        if (c == 's') 
-        {
-            start();
-        }
-        if (c == 'c')
-        {
-            clear_configuration();
-        }
-        if (c == 'f')
-        {
-            prepare_for_flashing();
-        }
-        if (c == 'q')
-        {
-            reset_usb_boot(0, 0);
-        }
+        char c = getchar();
+        connection.run(c);
+        //char c = getchar(); 
+        //if (c == 's') 
+        //{
+        //    start();
+        //}
+        //if (c == 'c')
+        //{
+        //    clear_configuration();
+        //}
+        //if (c == 'f')
+        //{
+        //    prepare_for_flashing();
+        //}
+        //if (c == 'q')
+        //{
+        //    reset_usb_boot(0, 0);
+        //}
     }
 }
