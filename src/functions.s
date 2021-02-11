@@ -1,4 +1,4 @@
-// This file is part of MSBOOT project.
+// This file is part of MSBOOT pico project.
 // Copyright (C) 2021 Mateusz Stadnik
 //
 // This program is free software: you can redistribute it and/or modify
@@ -14,25 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#pragma once 
+.syntax unified 
+.arch armv6-m
+.thumb 
 
-#include <cstdint>
+.global boot_firmware
+boot_firmware:
+    msr msp, r0
+    bx r1
 
-#include <span>
-
-namespace msboot 
-{
-
-class FirmwareLoader 
-{
-public:
-    FirmwareLoader(uint32_t flash_offset);
-
-    using DataType = std::span<const uint8_t>;
-    bool write_page(int page_number, const DataType& data);
-private: 
-    uint32_t flash_offset_;
-};
-
-} // namespace msboot 
 

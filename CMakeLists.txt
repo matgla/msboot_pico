@@ -37,7 +37,8 @@ setup_mspkg(${mspkg_SOURCE_DIR})
 
 find_package(pico-sdk REQUIRED)
 
-set (PICO_COPY_TO_RAM ON CACHE INTERNAL "")
+#set (PICO_COPY_TO_RAM ON CACHE INTERNAL "")
+add_definitions(-DPICO_TIME_DEFAULT_ALARM_POOL_DISABLED=1)
 
 include (cmake/preload/toolchains/pico_arm_gcc)
 
@@ -49,10 +50,7 @@ set (CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(pico-extras REQUIRED)
 include (external/pico_extras_import)
 
-set (PICO_TARGET_LINKER_SCRIPT "DUPS")
-
 pico_sdk_init()
-
 
 set (CMAKE_C_STANDARD 11)
 set (CMAKE_CXX_STANDARD 20)

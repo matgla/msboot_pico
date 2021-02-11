@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 # This file is part of MSBOOT Pico project.
 # Copyright (C) 2021 Mateusz Stadnik
 #
@@ -14,30 +16,52 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# !/bin/python3
 
 import argparse
 import json
 import subprocess
+import serial
+import time
 
-parser = argparse.ArgumentParser(description =
-    "Script to flash Rasbperry PICO from command line")
+def flash_firmware(args):
+    print ("Flashing firmware")
+    drives = subprocess.check_output(["lsblk -O -J"], stderr=subprocess.PIPE, shell=True)
+
+    y = json.loads(drives)
+
+    rc = subprocess.call(["mount " + args.mount], shell=True)
+
+    if rc == 0:
+        subprocess.call(["cp " + args.image + " /mnt/rpi_pico -v"], shell=True)
+    else:
+        print("Mouting failed")
+        return -1
+
+    while True:
+        files = subprocess.check_output(["ls /mnt/rpi_pico"], stderr=subprocess.PIPE, shell=True)
+        if (len(files) == 0):
+            return 0
+    return 0
+
+
+def restart_to_bootloader(port):
+    print ("Restarting to bootloader")
+    with serial.Serial(port) as ser:
+        ser.write('q'.encode("utf-8"))
+        time.sleep(5)
+
+parser = argparse.ArgumentParser(description="Script to flash Rasbperry PICO from command line")
 parser.add_argument("--mount", dest="mount",
     action="store", help="Mount point for Raspberry PICO", required=True)
 parser.add_argument("--image", dest="image",
     action="store", help="Path to image for flash", required=True)
-
+parser.add_argument("--serial", dest="serial",
+    action="store", help="Serial port to send restart command")
+parser.add_argument("--restart", dest="restart",
+    action="store_true", help="Restart to pico bootloader (application must support it)")
 args, rest = parser.parse_known_args()
 
-drives = subprocess.check_output(["lsblk -O -J"], stderr=subprocess.PIPE, shell=True)
+if args.restart:
+    restart_to_bootloader(args.serial)
 
-y = json.loads(drives)
-
-rc = subprocess.call(["mount " + args.mount], shell=True)
-
-if rc == 0:
-    subprocess.call(["cp " + args.image + " /mnt/rpi_pico -v"], shell=True)
-else:
-    print("Mouting failed")
-
-
+flash_firmware(args)

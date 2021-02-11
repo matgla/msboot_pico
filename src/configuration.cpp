@@ -20,7 +20,6 @@
 #include <cstdio>
 
 #include <eul/crc/crc.hpp>
-
 extern "C" 
 {
 #include <hardware/flash.h>

@@ -37,6 +37,7 @@ public:
     void on_clear(void (*callback)());
     void on_flash(void (*callback)());
     void on_reset_to_picoboot(void (*callback)());
+    void on_boot(void (*callback)());
 private:
     uint8_t buffer_[FLASH_PAGE_SIZE];
 
@@ -44,6 +45,7 @@ private:
     void (*on_clear_)();
     void (*on_flash_)();
     void (*on_reset_to_picoboot_)();
+    void (*on_boot_)();
 };
 
 } // namespace msboot 

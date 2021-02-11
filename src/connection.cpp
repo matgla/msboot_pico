@@ -26,12 +26,14 @@ constexpr char clear_command = 'c';
 constexpr char start_command = 's';
 constexpr char flash_command = 'f';
 constexpr char reset_to_picoboot = 'q';
+constexpr char boot_command = 'b';
 
 Connection::Connection()
     : on_start_(nullptr)
     , on_clear_(nullptr)
     , on_flash_(nullptr)
     , on_reset_to_picoboot_(nullptr)
+    , on_boot_(nullptr)
 {
 
 }
@@ -56,26 +58,50 @@ void Connection::on_reset_to_picoboot(void (*callback)())
     on_reset_to_picoboot_ = callback;
 }
 
+void Connection::on_boot(void (*callback)())
+{
+    on_boot_ = callback; 
+}
+
 void Connection::run(const char c) 
 {
     switch (c) 
     {
         case clear_command: 
         {
-            
+            if (on_clear_)
+            {
+                on_clear_();
+            }
         } break; 
         case start_command:
         {
-    
+            if (on_clear_)
+            {
+                on_start_(); 
+            }
         } break;
         case flash_command:
         {
-
+            if (on_flash_)
+            {
+                on_flash_();
+            }
         } break; 
         case reset_to_picoboot: 
         {
-
+            if (on_reset_to_picoboot_)
+            {
+                on_reset_to_picoboot_();
+            }
         } break; 
+        case boot_command:
+        {
+            if (on_boot_)
+            {
+                on_boot_();
+            }
+        } break;
         default: 
         {
         }
